@@ -1,0 +1,9 @@
+digest: e4c72b6d
+name: dataset
+profile: '{"features_shape": [1156, 80], "features_size": 92480, "features_nbytes":
+  739840}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"type\": \"tensor\", \"tensor-spec\":
+  {\"dtype\": \"float64\", \"shape\": [-1, 80]}}]", "targets": null}}'
+source: '{"tags": {"mlflow.user": "fnortiz", "mlflow.source.name": "/Users/fnortiz/Documents/Master/mlops_env/lib/python3.13/site-packages/ipykernel_launcher.py",
+  "mlflow.source.type": "LOCAL"}}'
+source_type: code

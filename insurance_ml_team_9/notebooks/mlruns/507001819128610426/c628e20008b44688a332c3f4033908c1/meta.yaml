@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/fnortiz/Documents/Master/6.-%20Sep%202025/MLOps/mlops-project/insurance_ml_team_9/notebooks/mlruns/507001819128610426/c628e20008b44688a332c3f4033908c1/artifacts
+end_time: 1760249869829
+entry_point_name: ''
+experiment_id: '507001819128610426'
+lifecycle_stage: active
+run_id: c628e20008b44688a332c3f4033908c1
+run_name: logreg_autolog
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760249868382
+status: 3
+tags: []
+user_id: fnortiz

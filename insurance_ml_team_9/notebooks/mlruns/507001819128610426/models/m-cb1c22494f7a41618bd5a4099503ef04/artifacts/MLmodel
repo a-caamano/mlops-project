@@ -1,0 +1,22 @@
+artifact_path: file:///Users/fnortiz/Documents/Master/6.-%20Sep%202025/MLOps/mlops-project/insurance_ml_team_9/notebooks/mlruns/507001819128610426/models/m-cb1c22494f7a41618bd5a4099503ef04/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.4.0
+model_id: m-cb1c22494f7a41618bd5a4099503ef04
+model_size_bytes: 1422
+model_uuid: m-cb1c22494f7a41618bd5a4099503ef04
+prompts: null
+run_id: 1f3dc4dcee354aec80bbec8cf061329a
+utc_time_created: '2025-10-12 06:24:59.987852'

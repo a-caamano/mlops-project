@@ -1,0 +1,10 @@
+artifact_location: file:///Users/fnortiz/Documents/Master/6.-%20Sep%202025/MLOps/mlops-project/insurance_ml_team_9/notebooks/mlruns/507001819128610426/models/m-e199a03f6f91448e8289f1cf217c6645/artifacts
+creation_timestamp: 1760249647561
+experiment_id: '507001819128610426'
+last_updated_timestamp: 1760249649066
+model_id: m-e199a03f6f91448e8289f1cf217c6645
+model_type: null
+name: model
+source_run_id: 29967ca7879f4db2b81a3f40dbb75f32
+status: 2
+status_message: null

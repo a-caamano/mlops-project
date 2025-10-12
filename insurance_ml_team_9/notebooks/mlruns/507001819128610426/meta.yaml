@@ -1,0 +1,6 @@
+artifact_location: file:///Users/fnortiz/Documents/Master/6.-%20Sep%202025/MLOps/mlops-project/insurance_ml_team_9/notebooks/mlruns/507001819128610426
+creation_time: 1760247822698
+experiment_id: '507001819128610426'
+last_update_time: 1760247822698
+lifecycle_stage: active
+name: insurance_logreg_experiment
