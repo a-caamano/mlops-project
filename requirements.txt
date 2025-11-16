@@ -6,3 +6,5 @@ seaborn
 scikit-learn
 dvc
 mlflow
+fastapi
+uvicorn

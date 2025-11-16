@@ -1,39 +1,63 @@
-from load_data import InsuranceDataProcessor
-from preprocess_data import InsurancePipeline
-from train import ModelTrainerEvaluator
+# src/main.py
+from fastapi import FastAPI
+import pickle
+import pandas as pd
+import uvicorn
+from pydantic import BaseModel
+from typing import List
+import numpy as np
 
 
-def main():
-    # === 1. Cargar y limpiar datos ===
-    processor = InsuranceDataProcessor(
-        input_path='data/insurance_company_modified.csv',
-        output_path='data/insurance_clean.csv'
-    )
-    processor.load_data()
-    processor.clean_data()
-    processor.validate_target_variable()
-    processor.export_data()
-    processor.load_clean_data()
-
-    # === 2. Preprocesamiento y reducción de dimensionalidad ===
-    pipeline = InsurancePipeline(processor.cleaned_data)
-    X_train_final, X_test_final, y_train, y_test = pipeline.preprocess()
-
-    # === 3. Entrenar y evaluar modelos ===
-    trainer = ModelTrainerEvaluator(
-        X_train_final, X_test_final, y_train, y_test)
-    trainer.show_class_distribution()
-    trainer.correlation_with_target()
-    trainer.run_all_models()
-
-    # === 4. Mostrar resultados finales ===
-    print("\n=== Resumen Final de Resultados ===")
-    for model_name, metrics in trainer.results.items():
-        print(f"\nModelo: {model_name}")
-        print(f"Precisión: {metrics['weighted avg']['precision']:.3f}")
-        print(f"Recall: {metrics['weighted avg']['recall']:.3f}")
-        print(f"F1-Score: {metrics['weighted avg']['f1-score']:.3f}")
+# Load the saved model globally when the service starts
+try:
+    # Load the model artifact
+    with open("models/insurance_model.pkl", "rb") as f:
+        model = pickle.load(f) 
+    print("Model loaded successfully.")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None # Handle case where model cannot be loaded
 
 
+# Define the input data format for prediction
+# class InsuranceData(BaseModel):
+#    features: List[float]
+
+# Initialize FastAPI app
+app = FastAPI()
+
+
+# 3. Define the prediction endpoint
+@app.post("/predict")
+def predict_insurance(data: List[float]):
+    if model is None:
+        return {"error": "Model not available"}, 503
+        
+    try:
+        # Convert incoming JSON data into a format the model expects (e.g., DataFrame)
+        # input_df = pd.DataFrame([data])
+
+        # Model expects a 2D structure: [[feature_1, feature_2, ..., feature_86]]
+        input_array = np.array([data])
+        
+        # Convert to DataFrame (without column names, which preserves positional index)
+        input_df = pd.DataFrame(input_array)
+        
+        # Make the prediction
+        prediction = model.predict(input_df).tolist()
+        
+        # Return the result
+        return {"prediction": prediction}
+        
+    except Exception as e:
+        return {"error": str(e)}, 400
+
+
+# Define a root endpoint
+@app.get("/")
+def read_root():
+    return {"message": "Insurance model API"}
+
+# Run the server
 if __name__ == "__main__":
-    main()
+    uvicorn.run(app, host="0.0.0.0", port=8000)
