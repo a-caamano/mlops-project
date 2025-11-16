@@ -7,3 +7,6 @@ Francisco Natanael Ortiz Martinez (A01796014)
 Erika Cardona Rojas (A01749170)  
 Álvaro Daniel Zavala Arreola (A01796929)  
 Mariana Paola De los Cobos Kingston (A01796922) 
+
+Ruta y versión del artefacto del modelo:
+models:/insurance_model.pkl
