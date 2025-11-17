@@ -67,7 +67,6 @@ class ModelTrainerEvaluator:
 
         for model in models:
             self.train_and_evaluate(model.__class__.__name__, model)
-            
 
 
 if __name__ == "__main__":
@@ -88,8 +87,29 @@ if __name__ == "__main__":
     processor.export_data()
     processor.load_clean_data()
 
+    # === 1.1 Opcional: Simular Drift ===
+    from simulate_drift import simulate_drift
+
+    simulate = False   # Cambia a False para correr sin drift
+
+    if simulate:
+        print("\n Generando dataset con DRIFT...")
+        print(processor.cleaned_data)
+        processor.cleaned_data.columns = processor.cleaned_data.columns.astype(
+            str)
+        df_drift, drift_cols = simulate_drift(
+            processor.cleaned_data, drift_strength=0.9)
+
+        print("Columnas afectadas por drift:", drift_cols)
+
+        df_drift.to_csv(
+            "data/processed/insurance_clean_drift.csv", index=False)
+        df_to_use = df_drift
+    else:
+        df_to_use = processor.cleaned_data
+
     # === 2. Preprocesamiento y reducción de dimensionalidad ===
-    pipeline = InsurancePipeline(processor.cleaned_data)
+    pipeline = InsurancePipeline(df_to_use)
     X_train_final, X_test_final, y_train, y_test = pipeline.preprocess()
 
     # === 3. Entrenar y evaluar modelos ===
@@ -108,8 +128,16 @@ if __name__ == "__main__":
         print(f"F1-Score: {metrics['weighted avg']['f1-score']:.3f}")
 
     # Save the model to a file
-    with open("models/insurance_model.pkl", "wb") as f:
-        # Save the first model in dict
-        model = next(iter(trainer.models.values()))
-        pickle.dump(model, f)
-    print("Model saved as 'insurance_model.pkl'")
+   # Guardar el modelo entrenado
+    model = next(iter(trainer.models.values()))
+
+    if simulate:
+        # Guardar como modelo con drift
+        with open("models/insurance_model_drift.pkl", "wb") as f:
+            pickle.dump(model, f)
+        print("Model saved as 'insurance_model_drift.pkl'")
+    else:
+        # Guardar como modelo original
+        with open("models/insurance_model.pkl", "wb") as f:
+            pickle.dump(model, f)
+        print("Model saved as 'insurance_model.pkl'")

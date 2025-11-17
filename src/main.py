@@ -6,17 +6,22 @@ import uvicorn
 from pydantic import BaseModel
 from typing import List
 import numpy as np
+from simulate_drift import simulate_drift
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent.parent
+PROCESSED_DATA = BASE / "data" / "processed"
 
 
 # Load the saved model globally when the service starts
 try:
     # Load the model artifact
     with open("models/insurance_model.pkl", "rb") as f:
-        model = pickle.load(f) 
+        model = pickle.load(f)
     print("Model loaded successfully.")
 except Exception as e:
     print(f"Error loading model: {e}")
-    model = None # Handle case where model cannot be loaded
+    model = None  # Handle case where model cannot be loaded
 
 
 # Define the input data format for prediction
@@ -32,31 +37,63 @@ app = FastAPI()
 def predict_insurance(data: List[float]):
     if model is None:
         return {"error": "Model not available"}, 503
-        
+
     try:
         # Convert incoming JSON data into a format the model expects (e.g., DataFrame)
         # input_df = pd.DataFrame([data])
 
         # Model expects a 2D structure: [[feature_1, feature_2, ..., feature_86]]
         input_array = np.array([data])
-        
+
         # Convert to DataFrame (without column names, which preserves positional index)
         input_df = pd.DataFrame(input_array)
-        
+
         # Make the prediction
         prediction = model.predict(input_df).tolist()
-        
+
         # Return the result
         return {"prediction": prediction}
-        
+
     except Exception as e:
         return {"error": str(e)}, 400
 
 
+@app.post("/simulate-drift")
+def generate_drift(strength: float = 0.7):
+
+    try:
+        df = pd.read_csv(PROCESSED_DATA / "insurance_clean.csv")
+
+        from simulate_drift import simulate_drift
+
+        df_drifted, cols = simulate_drift(
+            df,
+            drift_strength=strength,
+            column="42"      # columna 42
+        )
+
+        df_drifted.to_csv(
+            PROCESSED_DATA / "insurance_clean_drift.csv", index=False
+        )
+
+        return {
+            "message": "Drift dataset generated",
+            "drifted_columns": list(cols),
+            "rows": len(df_drifted),
+            "strength": strength
+        }
+
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
 # Define a root endpoint
+
+
 @app.get("/")
 def read_root():
     return {"message": "Insurance model API"}
+
 
 # Run the server
 if __name__ == "__main__":
