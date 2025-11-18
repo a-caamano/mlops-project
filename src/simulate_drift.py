@@ -5,27 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.mixture import GaussianMixture
-
-
-# src/data/simulate_drift.py
-
-import numpy as np
-import pandas as pd
-from sklearn.mixture import GaussianMixture
-
-
-# src/data/simulate_drift.py
-
-import numpy as np
-import pandas as pd
-from sklearn.mixture import GaussianMixture
-
-
-# src/data/simulate_drift.py
-
-import numpy as np
-import pandas as pd
-from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
 

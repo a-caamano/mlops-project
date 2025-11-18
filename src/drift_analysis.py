@@ -20,12 +20,12 @@ from preprocess_data import InsurancePipeline
 PROCESSED_DATA = Path("data/processed")
 MODEL_PATH = Path("models/insurance_model.pkl")
 
-COLUMN = "42"            # Feature donde simulaste el drift
-TARGET_COL = "85"        # Ajusta si tu etiqueta tiene otro nombre
+COLUMN = "42"
+TARGET_COL = "85"
 
 # Umbrales de monitoreo
-PVAL_THRESHOLD = 0.05         # KS detecta drift
-MAX_F1_DROP = 0.03            # Caída máxima permitida en F1
+PVAL_THRESHOLD = 0.05
+MAX_F1_DROP = 0.03
 
 
 # ===========================
@@ -180,9 +180,9 @@ def main():
             print("- " + a)
 
         print("\nAcción propuesta:")
-        print("👉 Revisar el pipeline de features y considerar reentrenar el modelo con los datos recientes.")
+        print("Revisar el pipeline de features y considerar reentrenar el modelo con los datos recientes.")
     else:
-        print("\n✅ No hay alertas. Drift y desempeño dentro de tolerancia.")
+        print("\nNo hay alertas. Drift y desempeño dentro de tolerancia.")
 
 
 if __name__ == "__main__":
